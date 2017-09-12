@@ -19,13 +19,14 @@ function getRepoContributors(repoOwner, repoName, cb) {
     headers: {
       "User-Agent": "cjwsstrm"
     }
-  }
+  }//below turns the body scrambled data into an array of objects
+  //that we can work with
   request.get(options, function (error, response, body) {
     var data = JSON.parse(body)
     cb(error, data);
   });
 }
-
+//separate function to download images
 function downloadImageByURL(url, filePath) {
   request.get(url)
   .on('error', function (err) {
@@ -33,47 +34,18 @@ function downloadImageByURL(url, filePath) {
   })
   .pipe(fs.createWriteStream(filePath))
 }
-//calling the function with these parameters will produce a url
-//that links to a list of contributors
+//Calling the function below will combine above code to download
+//images for each object in the data array(here referenced as result).
+//It does so by iterating over each item in the array and then
+//runs the downloadImageByURL function for each item.
 getRepoContributors("jquery", "jquery", function(err, result) {
   result.forEach((repo) => {
-    console.log(repo.login, repo.avatar_url);
-    downloadImageByURL(repo.avatar_url, './avatar_images/image.png')
-  });//go back and make name of image dynamic
+    var imagesPath = './avatar_images' + '/' + repo.login + '.png';
+    downloadImageByURL(repo.avatar_url, imagesPath)
+  });
   console.log("Errors:", err);
-  console.log("Result:", result);
 });
 
 // // function cbURLS (data) {
 //   console.log(data);
 // }
-
-// request.get('https://api.github.com/repos/jquery/jquery/contributors')               // Note 1
-//        .on('error', function (err) {                                   // Note 2
-//          throw err;
-//        })
-//        .on('response', function (response) {                           // Note 3
-//          console.log('Response Status Code: ', response.statusCode);
-//          console.log('Content Type: ', response.headers['content-type']);
-//          console.log(body);
-//        })
-//       //  .pipe(fs.createWriteStream('./future.jpg'))               // Note 4
-//
-//       //  .on('finish', () => {
-//       //    console.log('Download complete.');
-//        });
-
-// ------------------
-// function getOptionsForRepoList(username, accessToken) {
-//   return {
-//     url: `https://api.github.com/users/${username}/repos`,
-//     qs: {
-//       sort: 'pushed',
-//       access_token: accessToken
-//     },
-//     headers: {
-//       'User-Agent': 'macaroon'
-//     }
-//   };
-// }
-//
