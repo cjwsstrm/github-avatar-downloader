@@ -2,6 +2,7 @@
 //It is in here for this exercise only.
 var request = require('request');
 var https = require('https');
+var fs = require('fs');
 var GITHUB_USER = "cjwsstrm";
 var GITHUB_TOKEN = "8b13fe355f1c2b0fc4e4244b7dffe3a972179f27";
 
@@ -21,24 +22,31 @@ function getRepoContributors(repoOwner, repoName, cb) {
   }
   request.get(options, function (error, response, body) {
     var data = JSON.parse(body)
-    console.log(data);
-    data.forEach((repo) => {
-      console.log(repo.login, repo.avatar_url);
-    });
+    cb(error, data);
   });
 }
 
+function downloadImageByURL(url, filePath) {
+  request.get(url)
+  .on('error', function (err) {
+    throw err;
+  })
+  .pipe(fs.createWriteStream(filePath))
+}
 //calling the function with these parameters will produce a url
 //that links to a list of contributors
 getRepoContributors("jquery", "jquery", function(err, result) {
+  result.forEach((repo) => {
+    console.log(repo.login, repo.avatar_url);
+    downloadImageByURL(repo.avatar_url, './avatar_images/image.png')
+  });//go back and make name of image dynamic
   console.log("Errors:", err);
   console.log("Result:", result);
 });
 
-
-function cbURLS (data) {
-  console.log(data);
-}
+// // function cbURLS (data) {
+//   console.log(data);
+// }
 
 // request.get('https://api.github.com/repos/jquery/jquery/contributors')               // Note 1
 //        .on('error', function (err) {                                   // Note 2
