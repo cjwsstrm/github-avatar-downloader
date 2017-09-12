@@ -22,6 +22,9 @@ function getRepoContributors(repoOwner, repoName, cb) {
   request.get(options, function (error, response, body) {
     var data = JSON.parse(body)
     console.log(data);
+    data.forEach((repo) => {
+      console.log(repo.login, repo.avatar_url);
+    });
   });
 }
 
@@ -32,6 +35,10 @@ getRepoContributors("jquery", "jquery", function(err, result) {
   console.log("Result:", result);
 });
 
+
+function cbURLS (data) {
+  console.log(data);
+}
 
 // request.get('https://api.github.com/repos/jquery/jquery/contributors')               // Note 1
 //        .on('error', function (err) {                                   // Note 2
