@@ -1,7 +1,6 @@
 //initial variables set. DO NOT put tokens in regular programs.
 //It is in here for this exercise only.
-var request = require('request');
-var https = require('https');
+var request = require('request');;
 var fs = require('fs');
 var GITHUB_USER = "cjwsstrm";
 var GITHUB_TOKEN = "8b13fe355f1c2b0fc4e4244b7dffe3a972179f27";
@@ -48,7 +47,3 @@ getRepoContributors(process.argv[2], process.argv[3], function(err, result) {
   });
   console.log("Errors:", err);
 });
-
-// // function cbURLS (data) {
-//   console.log(data);
-// }
