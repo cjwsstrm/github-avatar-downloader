@@ -12,7 +12,6 @@ console.log("Welcome to the GitHub Avatar Downloader!");
 //function to produce url to access array of contributors
 function getRepoContributors(repoOwner, repoName, cb) {
   var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
-  console.log(requestURL);
   var options = {
     url: requestURL,
 
@@ -38,7 +37,11 @@ function downloadImageByURL(url, filePath) {
 //images for each object in the data array(here referenced as result).
 //It does so by iterating over each item in the array and then
 //runs the downloadImageByURL function for each item.
-getRepoContributors("jquery", "jquery", function(err, result) {
+getRepoContributors(process.argv[2], process.argv[3], function(err, result) {
+  if (process.argv[2] === undefined || process.argv[3] === undefined) {
+    console.log("You need to specify both owner and repo")
+    return;//if statement will terminate function if one of the
+  }        //parameters are not provided
   result.forEach((repo) => {
     var imagesPath = './avatar_images' + '/' + repo.login + '.png';
     downloadImageByURL(repo.avatar_url, imagesPath)
