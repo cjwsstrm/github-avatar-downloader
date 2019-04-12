@@ -2,8 +2,8 @@
 //It is in here for this exercise only.
 var request = require('request');;
 var fs = require('fs');
-var GITHUB_USER = "cjwsstrm";
-var GITHUB_TOKEN = "8b13fe355f1c2b0fc4e4244b7dffe3a972179f27";
+var GITHUB_USER = "name";
+var GITHUB_TOKEN = "token";
 
 
 
